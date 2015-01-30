@@ -356,6 +356,11 @@ func pong(c *irc.Conn, l *irc.Line, args []string) {
 	Privmsg2(c, l.Args[0], l.Nick+": ping!")
 }
 
+// Added on the first day of fluffy's freedom
+func source(c *irc.Conn, l *irc.Line, args []string) {
+	Privmsg2(c, l.Args[0], l.Nick+": You can find me at https://github.com/acieroid/fluffy")
+}
+
 var tags map[string][]string = map[string][]string{}
 
 func look(c *irc.Conn, l *irc.Line, args []string) {
@@ -401,7 +406,7 @@ func init() {
 			help,
 		},
 		"look": {
-			"!look <tags>		: Look for tagged urls (tag1|tag2|...|tagn)",
+			"!look <tags>           : Look for tagged urls (tag1|tag2|...|tagn)",
 			look,
 		},
 		"ping": {
@@ -411,6 +416,10 @@ func init() {
 		"pong": {
 			"!pong                  : Send back a ping",
 			pong,
+		},
+		"source": {
+			"!source                : Display URL to my source code",
+			source,
 		},
 	}
 }
