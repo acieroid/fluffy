@@ -28,7 +28,7 @@ import (
 
 var (
 	nick = flag.String("nick", "fluffy", "IRC nick name")
-	room = flag.String("chan", "#foo", "IRC channel")
+	room = flag.String("chan", "#bar", "IRC channel")
 	serv = flag.String("serv", "irc.awesom.eu", "IRC server")
 	nlog = flag.Int("nlog", 500, "Maximum internal log size")
 
@@ -214,8 +214,13 @@ func addFortune(f string) string {
 // But still no fortune(1). I don't dare to ask again.
 //
 // Please, note the &raw=1, again.
-func getFortune(n string) string {
-	resp, err := http.Get(*fort + "/" + n + "?raw=1")
+func getFortune(query string) string {
+	n, err := strconv.ParseInt(query, 10, 32)
+	url := *fort + "/"
+	if err == nil && n >= 0 {
+		url += strconv.FormatInt(n, 10)
+	}
+	resp, err := http.Get(url + "?raw=1")
 	if err != nil {
 		log.Println(err)
 		return "random fortune"
