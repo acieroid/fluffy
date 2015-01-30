@@ -3,16 +3,16 @@
  *
  * Tested by #foo.
  *
- * This code is as available and free as a grain
- * of sand in the subcontinental Sahara.
+ * This code is as available and free as a grain of sand in the subcontinental
+ * Sahara.
  *
- * (Hope this will cover every juridictions better
- * than public domain)
+ * (Hope this will cover every jurisdictions better than public domain)
  *
  */
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	irc "github.com/fluffle/goirc/client"
 	"html"
@@ -24,7 +24,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"crypto/tls"
 )
 
 var (
@@ -91,7 +90,9 @@ func (f *Logger) Dump(n int) (res string) {
 		// was not the root cause however.
 		// seems reasonable to keep it, but may
 		// be that useless.
-		if n > f.pos { n = f.pos }
+		if n > f.pos {
+			n = f.pos
+		}
 		// end.
 		for i := f.pos - 1; i >= 0 && n > 0; i, n = i-1, n-1 {
 			res = f.data[i] + "\n" + res
@@ -101,7 +102,9 @@ func (f *Logger) Dump(n int) (res string) {
 		// was not the root cause however.
 		// seems reasonable to keep it, but may
 		// be that useless.
-		if n > len(f.data) { n = len(f.data) }
+		if n > len(f.data) {
+			n = len(f.data)
+		}
 		// end.
 		for i := f.pos - 1; i >= 0 && n > 0; i, n = i-1, n-1 {
 			res = f.data[i] + "\n" + res
@@ -156,7 +159,6 @@ func SaveTheFluffy() {
 func LoadTheFluffy() {
 }
 
-
 // Multiline private  message; substitue tab for spaces
 func Privmsg2(c *irc.Conn, t, m string) {
 	// bullet proof
@@ -170,7 +172,7 @@ func Privmsg2(c *irc.Conn, t, m string) {
 
 		// bullet proof
 		// what a breaking integer!
-		n = n-1
+		n = n - 1
 		if n == 0 {
 			break
 		}
@@ -206,11 +208,11 @@ func addFortune(f string) string {
 // install the games.txz because of read-only filesystems.
 // Asking the owner lead him to fully upgrade the whole OSes
 // ultimately leading to a broken ZFS and to an un-bootable system.
-// 
+//
 // Now we have deployed newsome, so...
-// 
+//
 // But still no fortune(1). I don't dare to ask again.
-// 
+//
 // Please, note the &raw=1, again.
 func getFortune(n string) string {
 	resp, err := http.Get(*fort + "/" + n + "?raw=1")
@@ -281,7 +283,7 @@ func addPaste(s, room string) string {
 	// and a full ioutil.ReadAll was then setup
 	// The following lines are for purely historical
 	// purposes.
-	if (resp.Request.URL.Path != "") {
+	if resp.Request.URL.Path != "" {
 		// here is a debugging line
 		// in case one ever found the cases
 		// where this works. (i assure that it sometimes did)
@@ -299,7 +301,7 @@ func addPaste(s, room string) string {
 	// this lead to weird hostname: http://paste.awesom.eumjPp
 	// note that thanks to the previous line, we know that it
 	// was *before* the &user= was used!
-	return *paste+"/"+string(body)
+	return *paste + "/" + string(body)
 }
 
 func lastlog(c *irc.Conn, l *irc.Line, args []string) {
@@ -313,9 +315,13 @@ func lastlog(c *irc.Conn, l *irc.Line, args []string) {
 	// bullet proof
 	// found by acieroid
 	// this one makes some sense: [-n,0] lines of log
-	if n < 0 { n = -n }
+	if n < 0 {
+		n = -n
+	}
 	// but this one is plainly hacky:
-	if n == 0 { n = 1 }
+	if n == 0 {
+		n = 1
+	}
 
 	Privmsg2(c, l.Args[0], l.Nick+": "+addPaste(logger.Dump(n), l.Args[0]))
 }
@@ -338,6 +344,7 @@ func tell(c *irc.Conn, l *irc.Line, args []string) {
 func ping(c *irc.Conn, l *irc.Line, args []string) {
 	Privmsg2(c, l.Args[0], l.Nick+": pong!")
 }
+
 // Superior Ping/Pong Mechanism.
 // We should definitely register a patent on this.
 func pong(c *irc.Conn, l *irc.Line, args []string) {
@@ -373,7 +380,7 @@ func init() {
 	commands = map[string]Command{
 		"fortune": {
 			"!fortune <+> <fortune> : Add a fortune\n" +
-			"!fortune [n]           : Get a fortune",
+				"!fortune [n]           : Get a fortune",
 			fortune,
 		},
 		"lastlog": {
@@ -415,9 +422,9 @@ func htmlTitle(url string) string {
 	// allows invalidate https certificate.
 	// thanks Izu
 	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true },
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-	client := &http.Client{Transport : tr}
+	client := &http.Client{Transport: tr}
 	resp, err := client.Get(url)
 
 	if err != nil {
@@ -475,8 +482,8 @@ func getLine(c *irc.Conn, l *irc.Line) {
 				}
 			}
 			if want {
-				title := htmlTitle(w);
-				if (title != "") {
+				title := htmlTitle(w)
+				if title != "" {
 					Privmsg2(c, l.Args[0], title)
 				}
 				// tag it
