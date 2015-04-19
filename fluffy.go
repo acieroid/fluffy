@@ -232,7 +232,7 @@ func getFortune(query string) string {
 		return "random fortune"
 	}
 
-	return string(body)
+	return strings.TrimSpace(string(body))
 }
 
 func fortune(c *irc.Conn, l *irc.Line, args []string) {
@@ -464,8 +464,8 @@ func htmlTitle(url string) string {
 		return ""
 	}
 
-	return strings.Replace(html.UnescapeString(string(body[b+7:e])),
-		"\n", " ", -1)
+	return strings.TrimSpace(strings.Replace(html.UnescapeString(string(body[b+7:e])),
+		"\n", " ", -1))
 }
 
 // "getLine" is a misleading name.
