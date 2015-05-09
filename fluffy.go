@@ -28,7 +28,7 @@ import (
 
 var (
 	nick = flag.String("nick", "fluffy", "IRC nick name")
-	room = flag.String("chan", "#bar", "IRC channel")
+	room = flag.String("chan", "#foo", "IRC channel")
 	serv = flag.String("serv", "irc.awesom.eu", "IRC server")
 	nlog = flag.Int("nlog", 500, "Maximum internal log size")
 
